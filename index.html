@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LoveFrame — a photobooth for two, wherever you are</title>
+<meta name="description" content="A photobooth built for long distance couples. Take a photo together, frame it with love, keep it forever." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="stardust" id="stardust"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">✦</span>
+    <span class="brand-name">LoveFrame</span>
+  </div>
+  <p class="tagline">a photobooth stitched across the distance</p>
+</header>
+
+<main>
+
+  <!-- ============ HERO / BOOTH ============ -->
+  <section class="booth" id="booth">
+
+    <div class="booth-thread" aria-hidden="true">
+      <svg viewBox="0 0 600 40" preserveAspectRatio="none">
+        <path id="threadPath" d="M0,20 C 100,0 200,40 300,20 C 400,0 500,40 600,20" />
+      </svg>
+      <span class="thread-heart thread-heart-a">♥</span>
+      <span class="thread-heart thread-heart-b">♥</span>
+    </div>
+
+    <div class="booth-frame">
+
+      <div class="booth-screen">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="captureCanvas" class="hidden-canvas"></canvas>
+
+        <div class="screen-overlay" id="screenOverlay">
+          <button class="start-btn" id="startCameraBtn">
+            <span class="start-btn-icon">◎</span>
+            <span>open the booth</span>
+          </button>
+          <p class="screen-hint">allow camera access — it's just between you two</p>
+        </div>
+
+        <div class="countdown" id="countdown" aria-live="polite"></div>
+        <div class="flash" id="flash"></div>
+
+        <div class="booth-badge" id="liveBadge">● live</div>
+      </div>
+
+      <div class="booth-controls" id="boothControls">
+        <div class="filter-row" id="filterRow">
+          <button class="filter-chip active" data-filter="none">true</button>
+          <button class="filter-chip" data-filter="warm">golden hour</button>
+          <button class="filter-chip" data-filter="mono">midnight</button>
+          <button class="filter-chip" data-filter="fade">faded polaroid</button>
+          <button class="filter-chip" data-filter="dreamy">dreamy</button>
+        </div>
+
+        <button class="shutter" id="shutterBtn" disabled>
+          <span class="shutter-inner"></span>
+        </button>
+
+        <p class="shots-hint" id="shotsHint">shot 1 of 1</p>
+      </div>
+
+    </div>
+
+    <p class="booth-caption">no accounts, no uploads — every photo stays on your device</p>
+  </section>
+
+  <!-- ============ TEMPLATE PICKER ============ -->
+  <section class="templates" id="templateSection">
+    <h2 class="section-title">choose how to keep it</h2>
+    <p class="section-sub">six frames, each for a different kind of missing someone</p>
+
+    <div class="template-grid" id="templateGrid">
+      <button class="template-card" data-template="polaroid">
+        <span class="tc-preview tc-polaroid">
+          <span class="tc-photo"></span>
+        </span>
+        <span class="tc-name">Polaroid Stack</span>
+        <span class="tc-desc">warm, handwritten, one for the wall</span>
+      </button>
+
+      <button class="template-card" data-template="neon">
+        <span class="tc-preview tc-neon">
+          <span class="tc-photo"></span>
+        </span>
+        <span class="tc-name">Neon Heart</span>
+        <span class="tc-desc">glowing outline for late-night calls</span>
+      </button>
+
+      <button class="template-card" data-template="filmstrip">
+        <span class="tc-preview tc-filmstrip">
+          <span class="tc-photo"></span><span class="tc-photo"></span><span class="tc-photo"></span>
+        </span>
+        <span class="tc-name">Film Strip</span>
+        <span class="tc-desc">three frames, one story</span>
+      </button>
+
+      <button class="template-card" data-template="letter">
+        <span class="tc-preview tc-letter">
+          <span class="tc-photo"></span>
+          <span class="tc-seal"></span>
+        </span>
+        <span class="tc-name">Love Letter</span>
+        <span class="tc-desc">sealed, stitched, a little old-fashioned</span>
+      </button>
+
+      <button class="template-card" data-template="starry">
+        <span class="tc-preview tc-starry">
+          <span class="tc-photo"></span>
+        </span>
+        <span class="tc-name">Starry Night</span>
+        <span class="tc-desc">same sky, two cities</span>
+      </button>
+
+      <button class="template-card" data-template="y2k">
+        <span class="tc-preview tc-y2k">
+          <span class="tc-photo"></span>
+        </span>
+        <span class="tc-name">Retro Pop</span>
+        <span class="tc-desc">stickers, tape, no rules</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ DETAILS FORM ============ -->
+  <section class="details" id="detailsSection">
+    <h2 class="section-title">the small print of us</h2>
+    <div class="details-grid">
+      <label class="field">
+        <span>your names</span>
+        <input type="text" id="namesInput" placeholder="Hafiz &amp; Irdina" maxlength="40" />
+      </label>
+      <label class="field">
+        <span>a caption</span>
+        <input type="text" id="captionInput" placeholder="miles apart, minutes on the phone" maxlength="60" />
+      </label>
+      <label class="field">
+        <span>together since</span>
+        <input type="date" id="startDateInput" />
+      </label>
+      <label class="field">
+        <span>your city</span>
+        <input type="text" id="cityAInput" placeholder="Kuching" maxlength="24" />
+      </label>
+      <label class="field">
+        <span>their city</span>
+        <input type="text" id="cityBInput" placeholder="Gombak" maxlength="24" />
+      </label>
+    </div>
+    <button class="render-btn" id="renderBtn">frame this photo →</button>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="result hidden" id="resultSection">
+    <h2 class="section-title">yours to keep</h2>
+    <div class="result-stage">
+      <canvas id="finalCanvas"></canvas>
+    </div>
+    <div class="result-actions">
+      <button class="ghost-btn" id="retakeBtn">← retake</button>
+      <button class="primary-btn" id="downloadBtn">download photo</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>built for the ones counting days · <span id="year"></span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
